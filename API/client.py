@@ -1,5 +1,6 @@
 import requests
 from config import Config
+from json import loads
 
 
 class Client:
@@ -14,9 +15,7 @@ class Client:
 
 
     def api_test(self):
-
         full_url = self.base_url + self.options["agents"]
-
         response = requests.get(full_url, headers=self.auth_header)
         if response.status_code == 200:
             return "Connection to the API was successfull"
@@ -34,7 +33,6 @@ class Client:
 
 
     def get_account_by_id(self, account_id):
-        
         if int(account_id):
             full_url = self.base_url + f"accounts/{account_id}"
             return requests.get(full_url, headers=self.auth_header)
@@ -74,5 +72,16 @@ class Client:
         else:
             TypeError(f"account_id must be of type int and not '{type(account_id)}'")
 
+    
+    def decommission(self, id_list):
 
-# use 'loads(str({"data":{}, "filter":  {"ids": [""]}}).replace("'", "\""))' format for Post requests 
+        full_url = self.base_url + "/agents/actions/decommission"
+
+        if type(id_list) == list or len(id_list) == 0:
+            command = loads(str({"data":{}, "filter":  {"ids": id_list}}).replace("'", "\""))
+            return requests.post(full_url, headers=self.auth_header, json=command)
+        else:
+            TypeError(f"Arg 'id_list' must be of type list and not be empty'")
+
+
+
