@@ -13,9 +13,20 @@ class Client:
         self.count_only = count_only
 
 
+    def api_test(self):
+
+        full_url = self.base_url + self.options["agents"]
+
+        response = requests.get(full_url, headers=self.auth_header)
+        if response.status_code == 200:
+            return "Connection to the API was successfull"
+        else:
+            return f"Connection to the API has failed with code: {response.status_code}"
+            
+
     def create_account(self):
         pass
-
+        
 
     def get_accounts(self):
         full_url = self.base_url + "/accounts"
@@ -29,7 +40,12 @@ class Client:
             return requests.get(full_url, headers=self.auth_header)
         else:
             TypeError(f"account_id must be of type int and not '{type(account_id)}'")
-        
+
+
+    def get_activities(self):
+        full_url = self.base_url + "/activities"
+        return requests.get(full_url, headers=self.auth_header)
+
 
     def get_uninstall_password(self, account_id):
 
@@ -49,13 +65,4 @@ class Client:
             TypeError(f"account_id must be of type int and not '{type(account_id)}'")
 
 
-    def api_test(self):
-
-        full_url = self.base_url + self.options["agents"]
-
-        response = requests.get(full_url, headers=self.auth_header)
-        if response.status_code == 200:
-            return "Connection to the API was successfull"
-        else:
-            return f"Connection to the API has failed with code: {response.status_code}"
-    
+# use 'loads(str({"data":{}, "filter":  {"ids": [""]}}).replace("'", "\""))' format for Post requests 
