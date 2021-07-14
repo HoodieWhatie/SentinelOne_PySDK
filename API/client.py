@@ -7,10 +7,6 @@ class Client:
     def __init__(self, api_token=Config.api_key, limit=10, count_only=False) -> None:
         self.api_token = api_token
         self.base_url = "https://usea1-swprd1.sentinelone.net/web/api/v2.1"
-        self.options = {
-                        "accounts":"/accounts", 
-                        "agents":"/agents"
-                        }
         self.api_key = api_token
         self.auth_header={'Authorization': f"ApiToken {self.api_key}"}
         self.limit = limit
@@ -22,18 +18,36 @@ class Client:
 
 
     def get_accounts(self):
-        full_url = self.base_url + self.options["accounts"]
+        full_url = self.base_url + "/accounts"
         return requests.get(full_url, headers=self.auth_header)
 
 
     def get_account_by_id(self, account_id):
         
         if int(account_id):
-            full_url = self.base_url + self.options["accounts"] + f"/{account_id}"
+            full_url = self.base_url + f"accounts/{account_id}"
             return requests.get(full_url, headers=self.auth_header)
         else:
             TypeError(f"account_id must be of type int and not '{type(account_id)}'")
         
+
+    def get_uninstall_password(self, account_id):
+
+        if int(account_id):
+            full_url = self.base_url + f"/accounts/{account_id}/uninstall-password/view"
+            return requests.get(full_url, headers=self.auth_header)
+        else:
+            TypeError(f"account_id must be of type int and not '{type(account_id)}'")
+
+
+    def get_uninstall_password_metadata(self, account_id):
+
+        if int(account_id):
+            full_url = self.base_url + f"/accounts/{account_id}/uninstall-password/metadata"
+            return requests.get(full_url, headers=self.auth_header)
+        else:
+            TypeError(f"account_id must be of type int and not '{type(account_id)}'")
+
 
     def api_test(self):
 
