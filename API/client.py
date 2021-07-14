@@ -19,10 +19,25 @@ class Client:
     def create_account(self):
         pass
 
+
+    def get_accounts(self):
+        full_url = self.base_url + self.options["accounts"]
+        return requests.get(full_url, headers=self.auth_header)
+
+    def get_account_by_id(self, account_id):
+        
+        if int(account_id):
+            full_url = self.base_url + self.options["accounts"] + f"/{account_id}"
+            return requests.get(full_url, headers=self.auth_header)
+        else:
+            TypeError(f"account_id must be of type int and not '{type(account_id)}'")
+        
+
     def api_test(self):
 
-        response = requests.get(self.base_url + self.options["agents"], headers=self.auth_header)
-        
+        full_url = self.base_url + self.options["agents"]
+
+        response = requests.get(full_url, headers=self.auth_header)
         if response.status_code == 200:
             return "Connection to the API was successfull"
         else:
