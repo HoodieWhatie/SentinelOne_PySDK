@@ -16,6 +16,7 @@ class Client:
         self.limit = limit
         self.count_only = count_only
 
+
     def create_account(self):
         pass
 
@@ -23,6 +24,7 @@ class Client:
     def get_accounts(self):
         full_url = self.base_url + self.options["accounts"]
         return requests.get(full_url, headers=self.auth_header)
+
 
     def get_account_by_id(self, account_id):
         
