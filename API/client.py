@@ -72,7 +72,7 @@ class Client:
         else:
             TypeError(f"account_id must be of type int and not '{type(account_id)}'")
 
-    
+
     def decommission(self, id_list):
 
         full_url = self.base_url + "/agents/actions/decommission"
@@ -82,6 +82,4 @@ class Client:
             return requests.post(full_url, headers=self.auth_header, json=command)
         else:
             TypeError(f"Arg 'id_list' must be of type list and not be empty'")
-
-
 
