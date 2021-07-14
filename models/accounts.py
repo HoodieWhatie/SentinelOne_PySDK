@@ -1,9 +1,15 @@
 class SKU:
     
-    def __init__(self, total_licenses, type, unlimited) -> None:
+    def __init__(self, total_licenses=int(), _type=str(), unlimited=bool()) -> None:
         self.total_licenses = total_licenses
-        self.type = type
+        self._type = _type
         self.unlimited = unlimited
+
+    def class_validator(self):
+        pass
+            
+    def is_default(self):
+        return self == SKU()
 
 
 class IOCAttributes:
@@ -45,8 +51,8 @@ class Policy:
 
 class Account:
 
-    def __init__(self, name, external_id, inherits, expiration, 
-                    account_type, skus, policy, unlimited_expiration) -> None:
+    def __init__(self, name=str(), external_id=str(), inherits=bool(), expiration=str(), 
+                    account_type=str(), skus=SKU(), policy=Policy(), unlimited_expiration=bool()):
         self.name = name
         self.external_id = external_id
         self.inherits = inherits
@@ -55,3 +61,12 @@ class Account:
         self.skus = skus
         self.policy = policy
         self.unlimited_expiration = unlimited_expiration
+
+        self.class_validator()
+
+    def class_validator(self):
+        if self.name == '' or type(self.name) != str:
+            return TypeError("Attr 'name' must be of type str and not empty.")
+        if self.skus.is_default():
+            return ValueError("Attr 'skus' cannot be left default. Please enter values for 'total_licenses', 'type' and 'unlimited'")
+        
