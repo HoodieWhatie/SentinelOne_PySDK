@@ -47,6 +47,16 @@ class Client:
         return requests.get(full_url, headers=self.auth_header)
 
 
+    def get_activity_types(self):
+        full_url = self.base_url + "/activities/types"
+        return requests.get(full_url, headers=self.auth_header) 
+
+
+    def get_last_syslog_activity(self):
+        full_url = self.base_url + "/last-activity-as-syslog"
+        return requests.get(full_url, headers=self.auth_header)
+
+
     def get_uninstall_password(self, account_id):
 
         if int(account_id):
