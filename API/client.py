@@ -41,6 +41,7 @@ class Client:
         full_url = self.base_url + "/accounts"
         return requests.get(full_url, headers=self.auth_header)
 
+
     # Get Account data from a given Account ID. 
     def get_account_by_id(self, account_id):
         if int(account_id):
@@ -49,15 +50,27 @@ class Client:
         else:
             TypeError(f"account_id must be of type int and not '{type(account_id)}'")
 
+
     # Get the activities, and their data, that match the filters. 
     def get_activities(self):
         full_url = self.base_url + "/activities"
         return requests.get(full_url, headers=self.auth_header)
 
+
     # Get a list of activity types 
     def get_activity_types(self):
         full_url = self.base_url + "/activities/types"
         return requests.get(full_url, headers=self.auth_header) 
+
+
+    # Get the installed applications for a specific Agent(s)
+    def get_applications(self, id_list):
+
+        id_list = list(id_list) if type(id_list) != list else id_list
+
+        if len(id_list) > 0:
+            full_url = self.base_url + "/agents/applications"
+            return requests.get(full_url, headers=self.auth_header, data=id_list)
 
 
     # Get the Syslog message that corresponds to the last activity that matches the filter.
