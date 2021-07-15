@@ -1,4 +1,5 @@
 import requests
+from requests.api import request
 from config import Config
 
 # TEST after Redirection
@@ -13,6 +14,7 @@ class Client:
         self.limit = limit
         self.count_only = count_only
 
+
     # Sends a "Get Agents" request and confirms a 200 status code is returned
     def api_test(self):
         full_url = self.base_url + self.options["agents"]
@@ -22,7 +24,15 @@ class Client:
             return "Connection to the API was successfull"
         else:
             return f"Connection to the API has failed with code: {response.status_code}"
-        
+    
+
+    # Expire an Account immediately
+    def expire_an_account(self, account_id):
+        if int(account_id):
+            full_url = self.base_url + f"/web/api/v2.1/accounts/{account_id}/expire-now"
+            return requests.post(full_url, headers=self.auth_header)
+
+
     # Get the Accounts, and their data, that match the filter.
     def get_accounts(self):
         full_url = self.base_url + "/accounts"
