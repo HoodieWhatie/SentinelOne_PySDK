@@ -1,3 +1,4 @@
+from typing import Type
 import requests
 from requests.api import request
 from config import Config
@@ -31,6 +32,8 @@ class Client:
         if int(account_id):
             full_url = self.base_url + f"/web/api/v2.1/accounts/{account_id}/expire-now"
             return requests.post(full_url, headers=self.auth_header)
+        else:
+            TypeError(f"account_id must be of type int and not '{type(account_id)}'")
 
 
     # Get the Accounts, and their data, that match the filter.
@@ -79,3 +82,13 @@ class Client:
             return requests.get(full_url, headers=self.auth_header)
         else:
             TypeError(f"account_id must be of type int and not '{type(account_id)}'")
+
+
+    # Reactivate an expired Account.
+    def reactivate_an_account(self, account_id):
+        if int(account_id):
+            full_url = self.base_url + f"/web/api/v2.1/accounts/{account_id}/reactivate"
+            return requests.put(full_url, headers=self.auth_header)
+        else:
+            TypeError(f"account_id must be of type int and not '{type(account_id)}'")
+
