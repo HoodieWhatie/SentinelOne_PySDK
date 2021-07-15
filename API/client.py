@@ -66,11 +66,21 @@ class Client:
     # Get the installed applications for a specific Agent(s)
     def get_applications(self, id_list):
 
-        id_list = list(id_list) if type(id_list) != list else id_list
+        if type(id_list) == list and len(id_list) > 1:
+            ids = ",".join(id_list) 
+            full_url = self.base_url + f"/agents/applications?ids={ids}"
+            return requests.get(full_url, headers=self.auth_header)
 
-        if len(id_list) > 0:
-            full_url = self.base_url + "/agents/applications"
-            return requests.get(full_url, headers=self.auth_header, data=id_list)
+        elif type(id_list) == list and len(id_list) == 1:
+            full_url = self.base_url + f"/agents/applications?ids={id_list[0]}"
+            return requests.get(full_url, headers=self.auth_header)
+
+        elif type(id_list) == str and int(id_list):
+            full_url = self.base_url + f"/agents/applications?ids={id_list}"
+            return requests.get(full_url, headers=self.auth_header)
+
+        else:
+            TypeError("a single id should be submitted as a string. Multiple ids should be submitted as a list.")
 
 
     # Get the Syslog message that corresponds to the last activity that matches the filter.
